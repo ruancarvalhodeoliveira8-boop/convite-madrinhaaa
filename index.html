@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Minha Madrinha 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #fff5f6; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        
+        /* Pétalas Rosas */
+        .petal { position: absolute; background: #ffdae0; border-radius: 150% 0 150% 0; opacity: 0.6; pointer-events: none; z-index: 1; animation: fall 5s linear infinite; }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        /* Telas */
+        #tela-inicial, #tela-pergunta { position: fixed; inset: 0; background: #fff5f6; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; text-align: center; }
+        #tela-pergunta { display: none; z-index: 1100; padding: 20px; }
+
+        /* Card do Vídeo */
+        .card { width: 85%; max-width: 380px; background: white; border-radius: 15px; border: 2px solid #e0a3ad; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; z-index: 10; display: none; }
+        .v-box { padding: 10px; background: #000; }
+        video { width: 100%; display: block; border-radius: 5px; }
+        .content { padding: 25px; border-top: 2px solid #e0a3ad; text-align: center; }
+
+        h1 { font-family: 'Great Vibes', cursive; color: #b56b78; font-size: 2.8rem; margin: 0; }
+        
+        /* BOTÕES */
+        .btn { padding: 15px 30px; border-radius: 50px; border: none; cursor: pointer; font-weight: 600; margin-top: 20px; transition: 0.3s; font-size: 1rem; }
+        .btn-abrir { background: #b56b78; color: white; font-family: 'Great Vibes', cursive; font-size: 2rem; }
+        
+        .container-botoes { display: flex !important; gap: 15px; justify-content: center; margin-top: 30px; width: 100%; }
+        .btn-sim { background: #e0a3ad; color: white; min-width: 120px; }
+        .btn-nao { background: #fce4e4; color: #cc8888; min-width: 120px; border: 1px solid #eccaca; }
+    </style>
+</head>
+<body>
+
+    <audio id="musica" loop><source src="musica1.mp3" type="audio/mpeg"></audio>
+
+    <div id="tela-inicial">
+        <h1 style="color:#555">Para Minha Madrinha...</h1>
+        <button class="btn btn-abrir" onclick="iniciar()">Abrir Convite 🌸</button>
+    </div>
+
+    <div id="tela-pergunta">
+        <h1 style="font-size: 2.5rem; color: #333;">Você aceita ser minha madrinha?</h1>
+        <div class="container-botoes">
+            <button class="btn btn-sim" onclick="aceitar()">SIM! 🌸</button>
+            <button class="btn btn-nao" onclick="recusar()">NÃO</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-principal">
+        <div class="v-box">
+            <video id="video" playsinline muted>
+                <source src="video1.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="content">
+            <h1 id="titulo">Madrinha</h1>
+            <p style="color:#888; font-size:0.7rem; letter-spacing:2px;">UMA MENSAGEM ESPECIAL</p>
+        </div>
+    </div>
+
+    <script>
+        const v = document.getElementById("video");
+        const m = document.getElementById("musica");
+        const card = document.getElementById("card-principal");
+        const perg = document.getElementById("tela-pergunta");
+        const init = document.getElementById("tela-inicial");
+
+        function iniciar() {
+            init.style.display = "none";
+            card.style.display = "block";
+            m.play().catch(() => {});
+            v.play();
+        }
+
+        function checarTempo() {
+            if (v.currentTime >= 18.9) {
+                v.pause();
+                v.removeEventListener('timeupdate', checarTempo);
+                card.style.display = "none";
+                perg.style.display = "flex";
+            }
+        }
+
+        v.addEventListener('timeupdate', checarTempo);
+
+        function aceitar() {
+            perg.style.display = "none";
+            card.style.display = "block";
+            document.getElementById("titulo").innerText = "Te amo! ❤️";
+            v.play();
+        }
+
+        function recusar() {
+            alert("Você é essencial para mim! Diga que SIM! 🌸");
+        }
+
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.width = p.style.height = (Math.random() * 15 + 10) + 'px';
+            document.body.appendChild(p);
+        }
+    </script>
+</body>
+</html>
